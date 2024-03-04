@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <script src="lib/bindings/utils.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css"
+          integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"
+            integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <center>
+        <h1></h1>
+    </center>
+
+    <!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+    <script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+            crossorigin="anonymous"
+    />
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+            crossorigin="anonymous"
+    ></script>
+
+
+    <center>
+        <h1></h1>
+    </center>
+    <style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 600px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        #sidebar {
+            width: 300px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            right: -300px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            transition: right 0.3s ease-in-out;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow-y: auto;
+        }
+
+        #sidebar h2 {
+            margin-top: 0;
+        }
+
+        #sidebar pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        #sidebar .content {
+            max-height: 600px; /* 根据需要调整边栏内容的最大高度 */
+            overflow-y: auto;
+        }
+
+        #sidebar.show {
+            right: 0;
+        }
+
+        .highlight {
+            background-color: red !important;
+        }
+
+        .button-list li {
+            margin-top: 10px !important;
+            margin-bottom: 10px !important;
+        }
+
+        .button-list ul {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        #fileContent {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid lightgray;
+        }
+
+        #saveButton {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: white;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        #greetingMessage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%; /* 边栏宽度 */
+            height: 50px; /* 边栏高度 */
+            background-color: #f4f4f4;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            z-index: 999;
+            display: none;
+        }
+
+        #query {
+            width: 200px; /* 设置搜索框的宽度 */
+            height: 30px; /* 设置搜索框的高度 */
+            margin-bottom: 10px; /* 设置搜索框与其他内容之间的距离 */
+            /* 可以根据需要继续添加其他样式，比如颜色、边框等 */
+        }
+
+        #historyList {
+            width: 125px;
+            height: 100%;
+            position: fixed;
+            top: 50px; /* 留出顶部边条空间 */
+            bottom: 50px;
+            left: 0;
+            background-color: #f4f4f4;
+            transition: left 0.3s ease-in-out;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow-y: auto;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #historyList li {
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<label for="query">查询：</label>
+<input type="text" id="query" name="query" placeholder="在这里输入查询关键词...">
+
+<div id="historySidebar" class="sidebar">
+    <ul id="historyList"></ul>
+</div>
+
+<div class="card" style="width: 100%">
+    <div id="mynetwork" class="card-body"></div>
+</div>
+
+<div id="sidebar" class="sidebar">
+    <h3>选项</h3>
+    <ul class="button-list">
+        <li>
+            <button class="btn btn-danger" onclick="addNode()">新增节点</button>
+        </li>
+        <li>
+            <button class="btn btn-danger" onclick="deleteNode()">删除节点</button>
+        </li>
+        <li>
+            <button class="btn btn-primary" onclick="highlightNode()">突出显示</button>
+        </li>
+    </ul>
+</div>
+
+<div id="fileContent"></div>
+
+<div id="saveButton">
+    <button onclick="saveGraph()">保存</button>
+    <a id="downloadLink" style="display: none;" download="node_edge_usr.json"></a>
+</div>
+
+<div id="greetingMessage"></div>
+
+
+<script type="text/javascript">
+    // 显示问候信息
+    const greetingMessage = document.getElementById('greetingMessage');
+    greetingMessage.innerHTML = USERNAME + "，欢迎访问本系统！";
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const greetingMessage = document.getElementById('greetingMessage');
+        greetingMessage.style.display = 'block';
+
+        setTimeout(function () {
+            greetingMessage.style.display = 'none';
+        }, 2000);
+    });
+
+    // 获取查询输入框元素
+    var inputBox = document.getElementById("query");
+
+    // 监听输入框的键盘事件
+    inputBox.addEventListener("keydown", function (event) {
+        // 判断按下的键是否为回车键（键码为13）
+        if (event.keyCode === 13) {
+            // 获取输入框的值
+            var query = inputBox.value;
+            // 调用searchNode函数，并将输入内容传递给它
+            searchNode(query);
+        }
+    });
+
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var allNodes;
+    var allEdges;
+    var nodeColors;
+    var originalNodes;
+    var network;
+    var container;
+    var options, data;
+    var filter = {
+        item: '',
+        property: '',
+        value: []
+    };
+
+    fetch('node_edge_usr.json')
+        .then(response => response.json())
+        .then(graphData => {
+            // 在 Promise 完成后调用 drawGraph 函数
+            drawGraph(graphData);
+        })
+        .catch(error => {
+            console.error('Error loading JSON file:', error);
+        });
+
+    function searchNode(nodeName) {
+        var foundNodeId = null;
+
+        // 遍历节点列表，查找名称匹配的节点
+        nodes.forEach(node => {
+            if (node.label.includes(nodeName) || nodeName.includes(node.label)) {
+                foundNodeId = node.id;
+            }
+        });
+
+
+        if (foundNodeId) {
+            const node = allNodes[foundNodeId];
+            sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 课程资源 </h2>';
+            sidebar.appendChild(createButton('BiliBili', function () {
+                sidebar.classList.remove('show');
+                sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 资源分类 </h2>';
+
+                sidebar.appendChild(createButton('综合排序', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_.txt";
+                    const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('最多播放', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_click.txt";
+                    const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_click.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('最近更新', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_pubdate.txt";
+                    const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_pubdate.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('最多弹幕', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_dm.txt";
+                    const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_dm.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('最多收藏', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_stow.txt";
+                    const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_stow.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.classList.add('show');
+            }));
+
+            sidebar.appendChild(document.createElement('br'));
+
+            sidebar.appendChild(createButton('MOOC', function () {
+                sidebar.classList.remove('show');
+                sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 资源分类 </h2>';
+
+                sidebar.appendChild(createButton('最多播放', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/Mooc/" + node.label + "_video_names.txt";
+                    const filePath2 = "dataSet/Mooc/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('特殊标记', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/Mooc/" + node.label + "_video_special.txt";
+                    const filePath2 = "dataSet/Mooc/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.classList.add('show');
+            }));
+
+            sidebar.appendChild(document.createElement('br'));
+
+            sidebar.appendChild(createButton('好大学HDX', function () {
+                sidebar.classList.remove('show');
+                sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 资源分类 </h2>';
+
+                sidebar.appendChild(createButton('综合排序', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/HaoDaXue/" + node.label + "_video_names.txt";
+                    const filePath2 = "dataSet/HaoDaXue/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('所属学校', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/HaoDaXue/" + node.label + "_video_schools.txt";
+                    const filePath2 = "dataSet/HaoDaXue/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('开设教师', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/HaoDaXue/" + node.label + "_video_teachers.txt";
+                    const filePath2 = "dataSet/HaoDaXue/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.classList.add('show');
+            }));
+
+            sidebar.appendChild(document.createElement('br'));
+
+            sidebar.appendChild(createButton('iCourse', function () {
+                sidebar.classList.remove('show');
+                sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 资源分类 </h2>';
+
+                sidebar.appendChild(createButton('综合排序', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/iCourse/" + node.label + "_video_names.txt";
+                    const filePath2 = "dataSet/iCourse/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('所属学校', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/iCourse/" + node.label + "_video_teachers.txt";
+                    const filePath2 = "dataSet/iCourse/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('开设教师', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/iCourse/" + node.label + "_video_schools.txt";
+                    const filePath2 = "dataSet/iCourse/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('开课类型', function () {
+                    sidebar.classList.remove('show');
+                    const filePath1 = "dataSet/iCourse/" + node.label + "_video_types.txt";
+                    const filePath2 = "dataSet/iCourse/" + node.label + "_video_urls.txt";
+                    loadFileForSearch(filePath1, filePath2, foundNodeId);
+                }));
+
+                sidebar.classList.add('show');
+            }));
+            sidebar.classList.add('show');
+        }
+    }
+
+    // 添加历史记录函数
+    function addHistory(label) {
+        var historyList = document.getElementById('historyList');
+        var listItem = document.createElement('li');
+        listItem.textContent = label;
+        historyList.insertBefore(listItem, historyList.firstChild);
+    }
+
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph(graphData) {
+        container = document.getElementById('mynetwork');
+        sidebar = document.getElementById('sidebar');
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet();
+        edges = new vis.DataSet();
+
+
+        // 添加节点到数据集
+        graphData.nodes.forEach(node => {
+            nodes.add({
+                id: node.id,
+                label: node.label,
+                color: node.color,
+                shape: node.shape
+            });
+        });
+
+        // 添加边到数据集
+        graphData.edges.forEach(edge => {
+            edges.add({
+                from: edge.from,
+                to: edge.to,
+            });
+        });
+
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        nodeColors = {};
+        allNodes = nodes.get({returnType: "Object"});
+        for (nodeId in allNodes) {
+            nodeColors[nodeId] = allNodes[nodeId].color;
+        }
+        allEdges = edges.get({returnType: "Object"});
+
+
+        var options = {
+            "configure": {
+                "enabled": false
+            },
+            "edges": {
+                "color": {
+                    "inherit": true
+                },
+                "smooth": {
+                    "enabled": true,
+                    "type": "dynamic"
+                }
+            },
+            "interaction": {
+                "dragNodes": true,
+                "hideEdgesOnDrag": false,
+                "hideNodesOnDrag": false
+            },
+            "physics": {
+                "enabled": true,
+                "stabilization": {
+                    "enabled": true,
+                    "fit": true,
+                    "iterations": 1000,
+                    "onlyDynamicEdges": false,
+                    "updateInterval": 50
+                }
+            }
+        };
+
+
+        network = new vis.Network(container, data, options);
+
+        network.on('click', function (params) {
+            if (params.nodes.length > 0) {
+                var nodeId = params.nodes[0];
+                var node = allNodes[nodeId];
+
+                addHistory(node.label);
+
+                sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 课程资源 </h2>';
+                sidebar.appendChild(createButton('BiliBili', function () {
+                    sidebar.classList.remove('show');
+                    sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 资源分类 </h2>';
+
+                    sidebar.appendChild(createButton('综合排序', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_.txt";
+                        const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('最多播放', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_click.txt";
+                        const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_click.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('最近更新', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_pubdate.txt";
+                        const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_pubdate.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('最多弹幕', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_dm.txt";
+                        const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_dm.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('最多收藏', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/Bilibili/" + node.label + "_video_names_stow.txt";
+                        const filePath2 = "dataSet/Bilibili/" + node.label + "_video_urls_stow.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.classList.add('show');
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('MOOC', function () {
+                    sidebar.classList.remove('show');
+                    sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 资源分类 </h2>';
+
+                    sidebar.appendChild(createButton('最多播放', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/Mooc/" + node.label + "_video_names.txt";
+                        const filePath2 = "dataSet/Mooc/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('特殊标记', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/Mooc/" + node.label + "_video_special.txt";
+                        const filePath2 = "dataSet/Mooc/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.classList.add('show');
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('好大学HDX', function () {
+                    sidebar.classList.remove('show');
+                    sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 资源分类 </h2>';
+
+                    sidebar.appendChild(createButton('综合排序', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/HaoDaXue/" + node.label + "_video_names.txt";
+                        const filePath2 = "dataSet/HaoDaXue/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('所属学校', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/HaoDaXue/" + node.label + "_video_schools.txt";
+                        const filePath2 = "dataSet/HaoDaXue/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('开设教师', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/HaoDaXue/" + node.label + "_video_teachers.txt";
+                        const filePath2 = "dataSet/HaoDaXue/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.classList.add('show');
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('iCourse', function () {
+                    sidebar.classList.remove('show');
+                    sidebar.innerHTML = '<h2>' + node.label + '</h2>' + '<h2> 资源分类 </h2>';
+
+                    sidebar.appendChild(createButton('综合排序', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/iCourse/" + node.label + "_video_names.txt";
+                        const filePath2 = "dataSet/iCourse/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('所属学校', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/iCourse/" + node.label + "_video_teachers.txt";
+                        const filePath2 = "dataSet/iCourse/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('开设教师', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/iCourse/" + node.label + "_video_schools.txt";
+                        const filePath2 = "dataSet/iCourse/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.appendChild(document.createElement('br'));
+
+                    sidebar.appendChild(createButton('开课类型', function () {
+                        sidebar.classList.remove('show');
+                        const filePath1 = "dataSet/iCourse/" + node.label + "_video_types.txt";
+                        const filePath2 = "dataSet/iCourse/" + node.label + "_video_urls.txt";
+                        loadFile(filePath1, filePath2, params);
+                    }));
+
+                    sidebar.classList.add('show');
+                }));
+
+                sidebar.classList.add('show');
+            } else {
+                sidebar.classList.remove('show');
+            }
+        });
+
+
+        network.on("oncontext", function (params) {
+            if (params.nodes.length > 0) {
+                var nodeId = params.nodes[0];
+
+                sidebar.innerHTML = '';
+                sidebar.appendChild(createButton('新增节点', function () {
+                    addNode(nodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('删除节点', function () {
+                    deleteNode(nodeId);
+                }));
+
+                sidebar.appendChild(document.createElement('br'));
+
+                sidebar.appendChild(createButton('突出显示', function () {
+                    highlightNode(nodeId);
+                }));
+
+                sidebar.classList.add('show');
+            }
+        });
+
+        window.deleteNode = function (nodeId) {
+            var edgesToRemove = network.getConnectedEdges(nodeId);
+            edges.remove(edgesToRemove);
+            nodes.remove(nodeId);
+            sidebar.classList.remove('show');
+        };
+
+
+        // 声明一个用于保存节点颜色更改的对象
+        var updatedNodeColors = {};
+
+        window.highlightNode = function (nodeId) {
+            var updatedNodes = nodes.get();
+            var updatedNode = updatedNodes.find(function (node) {
+                return node.id === nodeId;
+            });
+
+            if (updatedNode) {
+                // 检查节点是否已经被突出显示
+                var isHighlighted = updatedNode.color && updatedNode.color.background === 'red';
+
+                if (isHighlighted) {
+                    // 如果节点已经被突出显示，将其颜色恢复为原来的颜色
+                    updatedNode.color = nodeColors[nodeId];
+                    delete updatedNodeColors[nodeId];
+                } else {
+                    // 如果节点没有被突出显示，将其颜色更改为红色并保存更改
+                    updatedNode.color = {background: 'red'};
+                    updatedNodeColors[nodeId] = {background: 'red'};
+                }
+
+                nodes.update(updatedNode);
+                sidebar.classList.remove('show');
+            }
+        };
+
+        window.addNode = function (selectedNodeId) {
+            const nodeName = prompt("请输入节点名称:");
+            if (nodeName) {
+                const newNodeId = nodeName;
+                nodes.add({color: "#97c2fc", id: newNodeId, label: nodeName, shape: "dot"});
+                edges.add({from: selectedNodeId, to: newNodeId});
+            }
+            allNodes = nodes.get({returnType: "Object"});
+            for (nodeId in allNodes) {
+                nodeColors[nodeId] = allNodes[nodeId].color;
+            }
+            allEdges = edges.get({returnType: "Object"});
+        }
+
+        return network;
+    }
+
+    async function loadFile(filepath, linkpath, params) {
+        var sidebar = document.getElementById('sidebar');
+
+        if (params.nodes.length > 0) {
+            var selectedNodeId = params.nodes[0];
+            var selectedNode = allNodes[selectedNodeId];
+            selectedNode.filePath = filepath;
+
+            // 使用 Promise.all 来并行读取两个文件的内容
+            await Promise.all([readFileContent(selectedNode.filePath), readFileContent(linkpath)])
+                .then(([fileContent1, fileContent2]) => {
+                    // 将两个文件的内容传递给 updateSidebarContent 函数
+                    updateSidebarContent(selectedNode.label, fileContent1, fileContent2, selectedNode.filePath);
+                })
+                .catch(error => {
+                    console.error('Error reading files:', error);
+                });
+        } else {
+            sidebar.classList.remove('show');
+        }
+    }
+
+    async function loadFileForSearch(filepath, linkpath, nodeId) {
+        var sidebar = document.getElementById('sidebar');
+
+        if (nodeId) {
+            var selectedNode = allNodes[nodeId];
+            selectedNode.filePath = filepath;
+
+            // 使用 Promise.all 来并行读取两个文件的内容
+            await Promise.all([readFileContent(selectedNode.filePath), readFileContent(linkpath)])
+                .then(([fileContent1, fileContent2]) => {
+                    // 将两个文件的内容传递给 updateSidebarContent 函数
+                    updateSidebarContent(selectedNode.label, fileContent1, fileContent2, selectedNode.filePath);
+                })
+                .catch(error => {
+                    console.error('Error reading files:', error);
+                });
+        } else {
+            sidebar.classList.remove('show');
+        }
+    }
+
+    // 异步函数，读取文件内容并返回 Promise 对象
+    function readFileContent(filePath) {
+        return new Promise((resolve, reject) => {
+            var fileRequest = new XMLHttpRequest();
+            fileRequest.open('GET', filePath, true);
+            fileRequest.onreadystatechange = function () {
+                if (fileRequest.readyState === 4) {
+                    if (fileRequest.status === 200) {
+                        resolve(fileRequest.responseText);
+                    } else {
+                        reject(new Error('Failed to read file: ' + filePath));
+                    }
+                }
+            };
+            fileRequest.send();
+        });
+    }
+
+
+    function updateSidebarContent(nodeLabel, content1, content2) {
+        var sidebar = document.getElementById('sidebar');
+        var titles = content1.split('\n'); // 将 content1 分割为标题数组
+        var links = content2.split('\n'); // 将 content2 分割为链接数组
+
+        var contentHTML = '<h2>' + nodeLabel + '</h2><div class="content">';
+
+        // 使用 Math.min 获取标题和链接数组的最小长度，以保证交错显示
+        var minLength = Math.min(titles.length, links.length);
+
+        // 交错显示标题和链接，并在每组之间插入空行
+        for (var i = 0; i < minLength; i++) {
+            contentHTML += '<p>' + titles[i] + '</p>';
+            contentHTML += '<a href="' + links[i] + '">' + links[i] + '</a>';
+            contentHTML += '<p>' + " " + '</p>'; // 插入空行
+        }
+
+        // 处理可能多出来的部分
+        for (var j = minLength; j < titles.length; j++) {
+            contentHTML += '<p>' + titles[j] + '</p>';
+            contentHTML += '<br>'; // 插入空行
+        }
+        for (var k = minLength; k < links.length; k++) {
+            contentHTML += '<a href="' + links[k] + '">' + links[k] + '</a>';
+            contentHTML += '<br>'; // 插入空行
+        }
+
+        contentHTML += '</div>';
+        sidebar.innerHTML = contentHTML;
+        sidebar.classList.add('show');
+    }
+
+    function createButton(text, onClick) {
+        var button = document.createElement('button');
+        button.textContent = text;
+        button.addEventListener('click', onClick);
+        return button;
+    }
+
+    function saveGraph() {
+        const data = {
+            nodes: nodes.get(),
+            edges: edges.get(),
+        };
+        const jsonData = JSON.stringify(data);
+        const blob = new Blob([jsonData], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+
+        const downloadLink = document.getElementById('downloadLink');
+        downloadLink.href = url;
+        downloadLink.click();
+
+        // 清理
+        URL.revokeObjectURL(url);
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{
+  "nodes": [
+    {
+      "color": "#97c2fc",
+      "id": "计算机导论",
+      "label": "计算机导论",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "计算机程序设计",
+      "label": "计算机程序设计",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "C,Java,Python",
+      "label": "C,Java,Python",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "数据结构",
+      "label": "数据结构",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "软件工程",
+      "label": "软件工程",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "编译原理",
+      "label": "编译原理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "软件开发方法",
+      "label": "软件开发方法",
+      "shape": "dot"
+    }
+  ]
+}

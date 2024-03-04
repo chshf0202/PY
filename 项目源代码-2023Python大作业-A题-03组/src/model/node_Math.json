@@ -1,0 +1,64 @@
+{
+  "nodes": [
+    {
+      "color": "#97c2fc",
+      "id": "大学物理",
+      "label": "大学物理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "电路原理",
+      "label": "电路原理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "高等数学",
+      "label": "高等数学",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "系统分析",
+      "label": "系统分析",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "数值分析",
+      "label": "数值分析",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "复变函数",
+      "label": "复变函数",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "离散数学",
+      "label": "离散数学",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "初等数论",
+      "label": "初等数论",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "形式语言",
+      "label": "形式语言",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "概率论",
+      "label": "概率论",
+      "shape": "dot"
+    }
+  ]
+}

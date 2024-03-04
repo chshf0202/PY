@@ -1,0 +1,94 @@
+{
+  "nodes": [
+    {
+      "color": "#97c2fc",
+      "id": "大学物理",
+      "label": "大学物理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "电路原理",
+      "label": "电路原理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "电子技术",
+      "label": "电子技术",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "数字逻辑",
+      "label": "数字逻辑",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "计算机组成原理",
+      "label": "计算机组成原理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "操作系统",
+      "label": "操作系统",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "自动化设计",
+      "label": "自动化设计",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "VSL设计",
+      "label": "VSL设计",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "计算机网络",
+      "label": "计算机网络",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "微计算机",
+      "label": "微计算机",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "系统结构",
+      "label": "系统结构",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "网络编程",
+      "label": "网络编程",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "汇编语言",
+      "label": "汇编语言",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "微处理器结构",
+      "label": "微处理器结构",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "高性能计算",
+      "label": "高性能计算",
+      "shape": "dot"
+    }
+  ]
+}

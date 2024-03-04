@@ -1,0 +1,17 @@
+无
+零基础体验课
+有道考研团队","id":1464}],"courseStartTime":"2023-07-14 17:48:12","mocTagDtos":[],"courseStatus":0,"shelfStatus":1,"status":1},"courseId":100138489,"goodsPlatTypeFrom":1,"highlightName":"吴大正《信号与{##系统##}》课后习题讲解","highlightTeacherNames":"有道考研团队","highlightContent":null,"highlightUniversity":""},{"type":401,"mocCourseKyCardBaseInfoDto":null,"columnVo":null,"mocCoursePackageKyCardBaseInfoDto":null,"mocCourseCard":null,"adultCourseCardDto":{"id":100138488,"courseTitle":"信号与系统考研试听课（奥本海姆版本）","courseOriginalPrice":3180.0,"courseSalePrice":0.0,"currentPrice":0.0,"courseSaleNum":43,"listImage":null,"headImg":"https://oimagec1.ydstatic.com/image?id\u003d1472164500971744317\u0026product\u003dxue","showImage":"https://oimagec1.ydstatic.com/image?id\u003d1472164500971744317\u0026product\u003dxue","heat":2974,"tags":null,"teacherList":[{"imgUrl":"https://oimagea1.ydstatic.com/image?id\u003d2224254174587623962\u0026product\u003dxue","name":"有道考研团队","id":1464}],"courseStartTime":"2023-07-17 11:54:07","mocTagDtos":[],"courseStatus":0,"shelfStatus":1,"status":1},"courseId":100138488,"goodsPlatTypeFrom":1,"highlightName":"信号与{##系统##}考研试听课（奥本海姆版本）","highlightTeacherNames":"有道考研团队","highlightContent":null,"highlightUniversity":""},{"type":301,"mocCourseKyCardBaseInfoDto":{"termId":1206324208,"price":9.90,"originalPrice":0.00,"curTermPublishStatus":2,"webVisible":1,"courseId":1206016809,"courseName":"系统学习美式音标-KK音标","staffId":1137566171,"teacherName":"晓莉英语","teacherPhoto":"http://edu-image.nosdn.127.net/D85EF0B5D972C81B68AEED3A1FBCC8FC.jpg?imageView\u0026amp;thumbnail\u003d310y310\u0026amp;quality\u003d100","enrollNum":11003,"bigPhoto":"http://edu-image.nosdn.127.net/E630C59AA2080E7D30D3800584889565.png?imageView\u0026thumbnail\u003d260y180\u0026quality\u003d100","realBigPhoto":"http://edu-image.nosdn.127.net/9800B0A7145E81F5C7489E9537EC0DF8.png?imageView\u0026thumbnail\u003d510y288\u0026quality\u003d100","tags":[{"id":1139801,"tagFamilyId":1001,"tagFamilyName":null,"targetId":null,"targetType":null,"name":"发音纠正打卡
+VIP课程
+无
+无
+认证考试
+期末高分
+无
+期末复习
+无
+无
+无
+专升本英语系统班
+期末复习
+无
+无

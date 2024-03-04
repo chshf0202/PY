@@ -1,0 +1,10 @@
+tkinter
+ttkbootstrap
+shutil
+webbrowser
+http
+socketserver
+json
+os
+lxml
+requests

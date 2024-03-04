@@ -1,0 +1,202 @@
+{
+  "nodes": [
+    {
+      "color": "#97c2fc",
+      "id": "大学物理",
+      "label": "大学物理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "电路原理",
+      "label": "电路原理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "电子技术",
+      "label": "电子技术",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "数字逻辑",
+      "label": "数字逻辑",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "计算机组成原理",
+      "label": "计算机组成原理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "计算机网络",
+      "label": "计算机网络",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "网络编程",
+      "label": "网络编程",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "网络安全",
+      "label": "网络安全",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "数据结构",
+      "label": "数据结构",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "图形学基础",
+      "label": "图形学基础",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "数据库",
+      "label": "数据库",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "软件工程",
+      "label": "软件工程",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "操作系统",
+      "label": "操作系统",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "嵌入式",
+      "label": "嵌入式",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "软件开发方法",
+      "label": "软件开发方法",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "数据挖掘",
+      "label": "数据挖掘",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "电子商务",
+      "label": "电子商务",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "高等数学",
+      "label": "高等数学",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "复变函数",
+      "label": "复变函数",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "离散数学",
+      "label": "离散数学",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "概率论",
+      "label": "概率论",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "现代控制理论",
+      "label": "现代控制理论",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "信号处理",
+      "label": "信号处理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "图像处理",
+      "label": "图像处理",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "模式识别",
+      "label": "模式识别",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "机器学习",
+      "label": "机器学习",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "虚拟现实",
+      "label": "虚拟现实",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "动画技术",
+      "label": "动画技术",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "信息检索",
+      "label": "信息检索",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "人机交互",
+      "label": "人机交互",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "人工智能",
+      "label": "人工智能",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "多媒体",
+      "label": "多媒体",
+      "shape": "dot"
+    },
+    {
+      "color": "#97c2fc",
+      "id": "神经网络",
+      "label": "神经网络",
+      "shape": "dot"
+    }
+  ]
+}
